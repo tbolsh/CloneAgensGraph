@@ -28,6 +28,7 @@ psql -U user -d dbname -c 'CREATE SCHEMA new_schema'
 psql -U user -q -d dbname -f new_schema.sql
 rm new_schema.sql
 ```
+In order to do it successfully we need to remove the old_schema from ag_graph table before renaming old_schema and then adding it back before creating new schema - otherwise AgensGraph triggers will prohibit schema from renaming (see Go code).
 
 ### What to do with ag_graph table?
 ```
@@ -101,17 +102,20 @@ Usage of ./ag_clone_graph:
   -dbh string
     	DB Host (default "localhost")
   -dbn string
-    	DB Name (default "agens")
+    	DB Name (default "test")
   -dbport int
     	DB Port (default 5432)
   -dbpsw string
     	DB Password
   -dbu string
-    	DB username (default "agens")
+    	DB username (default "postgres")
+  -g	Debug flag (default true)
   -n string
     	new graph name (default "new_graph")
+  -pgpref string
+    	directory with pg binaries (default "/usr/local/pgsql/bin/")
   -t string
     	template graph name (default "gtemplate")
 ```
 
-**[We expect postgres with SSL connection enabled!](https://www.postgresql.org/docs/9.1/ssl-tcp.html)** 
+**[We expect postgres with SSL connection enabled!](https://www.postgresql.org/docs/9.1/ssl-tcp.html)**
